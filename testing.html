@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Callback</title>
+</head>
+<body>
+  <h2>Processing Login...</h2>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("token");
+
+    if (token) {
+      // For demo: decode fake token
+      try {
+        const user = JSON.parse(atob(token));
+        document.body.innerHTML = `
+          <h1>Welcome, ${user.username} 🎉</h1>
+          <p>Email: ${user.email}</p>
+          <p>Authentication successful via GridAuth ✅</p>
+        `;
+      } catch (err) {
+        document.body.innerHTML = "<h2>Invalid token received ❌</h2>";
+      }
+    } else {
+      document.body.innerHTML = "<h2>No token received ❌</h2>";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo Website - GridAuth Login</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #f0f5ff, #fdfcff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    p {
+      color: #555;
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+
+    .auth-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #4f46e5, #3b82f6);
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      transition: background 0.3s ease;
+    }
+
+    .auth-btn:hover {
+      background: linear-gradient(135deg, #4338ca, #2563eb);
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Welcome to the Future of Authentication</h1>
+    <p>Sign in securely using our GridAuth system.</p>
+    <!-- Replace URL with your GridAuth hosted app -->
+    <a href="http://localhost:5173/?redirect-uri=http://127.0.0.1:5500/test.html" target="_blank" class="auth-btn">
+      🔐 Sign in with GridAuth
+    </a>
+  </div>
+</body>
+</html>

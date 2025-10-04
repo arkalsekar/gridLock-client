@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Login Callback</title>
@@ -54,27 +55,75 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="card" id="content">
     <h2>Processing Login...</h2>
   </div>
 
   <script>
+    // Getting Params
     const params = new URLSearchParams(window.location.search);
+
+    // Extracting Token from the User
     const token = params.get("token");
+
+    // Decoded Token
+    const decoded_token = JSON.parse(atob(token))
+    // Extracting Username, User ID and Session ID
+    const username = decoded_token['user']['username']
+    const user_id = decoded_token['user']['user_id']
+    const session_id = decoded_token['user']['session_id']
+
     const content = document.getElementById("content");
+
+
+    // Get Cookie
+    function setCookie(name, value, days) {
+      const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+      document.cookie = `${name}=${JSON.stringify(value)}; expires=${expires}; path=/`;
+    }
+
+    // Set Cookie
+    function getCookie(name) {
+      const cookies = document.cookie.split("; ");
+      for (let cookie of cookies) {
+        const [key, value] = cookie.split("=");
+        if (key === name) return decodeURIComponent(value);
+      }
+      return null;
+    }
+
+    if (decoded_token) {
+      value = {
+        "username": username,
+        "user_id": user_id,
+        "session_id": session_id
+      }
+      setCookie('session', value, 3);
+    }
+    
+    cookie_data = JSON.parse(getCookie('session'));
 
     if (token) {
       try {
         const user = JSON.parse(atob(token));
         content.innerHTML = `
-          <h1>Welcome, ${user.username} 🎉</h1>
-          <p>Email: ${user.email}</p>
+          <h1>Welcome, ${user['user']['username']} 🎉</h1>
+          <p>User ID: ${user['user']['user_id']}</p>
+          <p>Session ID: ${user['user']['session_id']}</p>
           <p>Authentication successful via <strong>GridAuth ✅</strong></p>
         `;
       } catch (err) {
@@ -89,6 +138,9 @@
         <p>Authentication failed. Please sign in again.</p>
       `;
     }
+
+
   </script>
 </body>
+
 </html>

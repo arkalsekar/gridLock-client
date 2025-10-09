@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Demo Website - GridAuth Login</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #f0f5ff, #fdfcff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    p {
+      color: #555;
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+
+    .auth-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #4f46e5, #3b82f6);
+      color: #fff;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    .auth-btn:hover {
+      background: linear-gradient(135deg, #4338ca, #2563eb);
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class="card">
+    <h1>Welcome to the Future of Authentication</h1>
+    <h3> Username : <span id="username"></span> </h3>
+    <p>Sign in securely using our GridAuth system.</p>
+    <!-- Replace URL with your GridAuth hosted app -->
+    <a id="login" href="https://gridlock-xi.vercel.app?redirect-uri=https://grid-lock-client.vercel.app/callback.html"
+      target="_blank" class="auth-btn">
+      🔐 Sign in with GridAuth
+    </a>
+
+    <a id="logout" class="auth-btn" href="/">
+      🔐 Sign out of GridAuth
+    </a>
+  </div>
+
+
+
+
+
+
+  <script type="module">
+    import { getCookie, setCookie, checkSession, deleteCookie } from './utils.js';
+    const loginbtn = document.getElementById('login');
+    const logoutbtn = document.getElementById('logout');
+    const username = document.getElementById('username');
+    const cookie_data = JSON.parse(getCookie('session'))
+    console.log(cookie_data)
+    username.innerText += cookie_data.username
+
+    logoutbtn.addEventListener('click', () => {
+      deleteCookie('session');
+    })
+
+    // API to check whether the user is authenticated
+    const check = async () => {
+      const result = await checkSession(cookie_data.user_id, cookie_data.session_id);
+      console.log("Session check result:", result);
+
+      if (result.isAuthenticated) {
+        console.log("✅ Valid session");
+        loginbtn.classList += " hide";
+
+      } else {
+        logoutbtn.classList += " hide";
+        console.log("🚫 Session invalid or expired");
+      }
+    }
+    check();
+
+
+
+  </script>
+
+
+
+
+</body>
+
+</html>

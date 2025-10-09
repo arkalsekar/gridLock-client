@@ -1,125 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Demo Website - GridAuth Login</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Website A — Account Access</title>
   <style>
-    body {
+    /* ===== Base Layout ===== */
+    * {
       margin: 0;
       padding: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: linear-gradient(135deg, #f0f5ff, #fdfcff);
+      box-sizing: border-box;
+      font-family: "Inter", Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      background: #f7f9fc;
     }
 
-    .card {
+    .container {
       background: #fff;
-      padding: 40px 30px;
-      border-radius: 16px;
+      border-radius: 14px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      width: 380px;
+      padding: 40px 35px;
       text-align: center;
-      max-width: 400px;
-      width: 100%;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
     }
 
-    h1 {
+    h2 {
+      color: #222;
       font-size: 24px;
-      margin-bottom: 16px;
-      color: #333;
+      margin-bottom: 12px;
     }
 
     p {
-      color: #555;
-      font-size: 15px;
-      margin-bottom: 24px;
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 28px;
+      line-height: 1.4;
     }
 
-    .auth-btn {
-      display: inline-block;
-      background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    input {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      outline: none;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #3888ca, #25ebc0);
       color: #fff;
-      text-decoration: none;
-      padding: 12px 20px;
-      border-radius: 10px;
+      border: none;
+      padding: 12px;
       font-size: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 18px;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #1976c2, #0fc79f);
+      transform: scale(1.03);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #999;
+      margin: 20px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .divider:not(:empty)::before {
+      margin-right: 0.75em;
+    }
+
+    .divider:not(:empty)::after {
+      margin-left: 0.75em;
+    }
+
+    .social-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+      border-radius: 8px;
+      padding: 12px;
       font-weight: 500;
-      margin-bottom: 5px;
-      transition: background 0.3s ease;
+      transition: transform 0.3s ease;
     }
 
-    .hide {
-      display: none;
+    .social-btn:hover {
+      transform: scale(1.03);
     }
 
-    .auth-btn:hover {
-      background: linear-gradient(135deg, #4338ca, #2563eb);
+    .google {
+      background: #4285f4;
+    }
+
+    .facebook {
+      background: #3b5998;
+    }
+
+    .gridlock {
+      background: linear-gradient(135deg, #00aaff, #00e3ae);
+      box-shadow: 0 3px 12px rgba(0, 255, 200, 0.25);
+    }
+
+    .footer {
+      margin-top: 18px;
+      font-size: 12px;
+      color: #aaa;
+    }
+
+    .footer a {
+      color: #00aaff;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== Animation ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .container {
+      animation: fadeIn 0.8s ease;
     }
   </style>
-
 </head>
-
 <body>
-  <div class="card">
-    <h1>Welcome to the Future of Authentication</h1>
-    <h3> Username : <span id="username"></span> </h3>
-    <p>Sign in securely using our GridAuth system.</p>
-    <!-- Replace URL with your GridAuth hosted app -->
-    <a id="login" href="https://gridlock-xi.vercel.app?redirect-uri=https://grid-lock-client.vercel.app/callback.html"
-      target="_blank" class="auth-btn">
-      🔐 Sign in with GridAuth
-    </a>
+  <div class="container">
+    <h2>Welcome Back</h2>
+    <p>Access your account or register securely using your preferred method below.</p>
 
-    <a id="logout" class="auth-btn" href="/">
-      🔐 Sign out of GridAuth
-    </a>
+    <!-- Email Registration -->
+    <input type="text" placeholder="Full Name" />
+    <input type="email" placeholder="Email Address" />
+    <input type="password" placeholder="Password" />
+    <button>Register / Login</button>
+
+    <div class="divider">or</div>
+
+    <!-- OAuth Options -->
+    <div class="social-buttons">
+      <a href="#" class="social-btn google">🔵 Sign in with Google</a>
+      <a href="#" class="social-btn facebook">📘 Sign in with Facebook</a>
+      <a 
+        href="https://gridlock-xi.vercel.app?redirect-uri=https://grid-lock-client.vercel.app/callback.html" 
+        target="_blank" 
+        class="social-btn gridlock">
+        🔐 Sign in with GridLock
+      </a>
+    </div>
+
+    <div class="footer">
+      By continuing, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.<br>
+      Powered by <strong>GridLock Authentication</strong>
+    </div>
   </div>
-
-
-
-
-
-
-  <script type="module">
-    import { getCookie, setCookie, checkSession, deleteCookie } from './utils.js';
-    const loginbtn = document.getElementById('login');
-    const logoutbtn = document.getElementById('logout');
-    const username = document.getElementById('username');
-    const cookie_data = JSON.parse(getCookie('session'))
-    console.log(cookie_data)
-    username.innerText += cookie_data.username
-
-    logoutbtn.addEventListener('click', () => {
-      deleteCookie('session');
-    })
-
-    // API to check whether the user is authenticated
-    const check = async () => {
-      const result = await checkSession(cookie_data.user_id, cookie_data.session_id);
-      console.log("Session check result:", result);
-
-      if (result.isAuthenticated) {
-        console.log("✅ Valid session");
-        loginbtn.classList += " hide";
-
-      } else {
-        logoutbtn.classList += " hide";
-        console.log("🚫 Session invalid or expired");
-      }
-    }
-    check();
-
-
-
-  </script>
-
-
-
-
 </body>
-
 </html>

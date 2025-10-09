@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Login Callback</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #f0f5ff, #fdfcff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #4f46e5, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 500;
+      color: #555;
+      margin-bottom: 16px;
+    }
+
+    p {
+      font-size: 15px;
+      color: #444;
+      margin: 6px 0;
+    }
+
+    .error {
+      color: #dc2626;
+      font-weight: 600;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card" id="content">
+    <h2>Processing Login...</h2>
+  </div>
+
+  <script>
+    // Getting Params
+    const params = new URLSearchParams(window.location.search);
+
+    // Extracting Token from the User
+    const token = params.get("token");
+
+    // Decoded Token
+    const decoded_token = JSON.parse(atob(token))
+    // Extracting Username, User ID and Session ID
+    const username = decoded_token['user']['username']
+    const user_id = decoded_token['user']['user_id']
+    const session_id = decoded_token['user']['session_id']
+
+    const content = document.getElementById("content");
+
+
+    // Get Cookie
+    function setCookie(name, value, days) {
+      const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+      document.cookie = `${name}=${JSON.stringify(value)}; expires=${expires}; path=/`;
+    }
+
+    // Set Cookie
+    function getCookie(name) {
+      const cookies = document.cookie.split("; ");
+      for (let cookie of cookies) {
+        const [key, value] = cookie.split("=");
+        if (key === name) return decodeURIComponent(value);
+      }
+      return null;
+    }
+
+    if (decoded_token) {
+      value = {
+        "username": username,
+        "user_id": user_id,
+        "session_id": session_id
+      }
+      setCookie('session', value, 3);
+    }
+    
+    cookie_data = JSON.parse(getCookie('session'));
+
+    if (token) {
+      try {
+        const user = JSON.parse(atob(token));
+        content.innerHTML = `
+          <h1>Welcome, ${user['user']['username']} 🎉</h1>
+          <p>User ID: ${user['user']['user_id']}</p>
+          <p>Session ID: ${user['user']['session_id']}</p>
+          <p>Authentication successful via <strong>GridAuth ✅</strong></p>
+        `;
+      } catch (err) {
+        content.innerHTML = `
+          <h1 class="error">Invalid Token ❌</h1>
+          <p>Please try signing in again.</p>
+        `;
+      }
+    } else {
+      content.innerHTML = `
+        <h1 class="error">No Token Received ❌</h1>
+        <p>Authentication failed. Please sign in again.</p>
+      `;
+    }
+
+
+  </script>
+</body>
+
+</html>

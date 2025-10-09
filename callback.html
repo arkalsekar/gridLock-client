@@ -1,135 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Login Callback</title>
+  <meta charset="UTF-8" />
+  <title>Welcome | GridLock Authenticated</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
-    body {
+    /* ===== Base & Background ===== */
+    * {
       margin: 0;
       padding: 0;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: linear-gradient(135deg, #f0f5ff, #fdfcff);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      box-sizing: border-box;
+      font-family: "Poppins", "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f7fbff, #edf6ff);
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
     }
 
-    .card {
-      background: #fff;
-      padding: 30px 40px;
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-      text-align: center;
-      max-width: 500px;
-      width: 90%;
-      animation: fadeIn 0.5s ease-in-out;
+    /* ===== Background Motion ===== */
+    .bg-animation {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(0, 163, 255, 0.08), transparent 40%),
+                  radial-gradient(circle at 80% 80%, rgba(0, 235, 195, 0.08), transparent 40%);
+      animation: moveBg 10s infinite alternate ease-in-out;
+      z-index: -1;
     }
 
-    h1 {
-      font-size: 26px;
+    @keyframes moveBg {
+      0% { transform: scale(1) translate(0, 0); }
+      100% { transform: scale(1.05) translate(10px, -10px); }
+    }
+
+    /* ===== Header ===== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 50px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      z-index: 10;
+    }
+
+    header .logo {
       font-weight: 700;
-      margin-bottom: 12px;
-      background: linear-gradient(135deg, #4f46e5, #3b82f6);
+      font-size: 22px;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #00aaff, #00e3ae);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    h2 {
-      font-size: 18px;
-      font-weight: 500;
-      color: #555;
-      margin-bottom: 16px;
+    header .logout {
+      background: linear-gradient(135deg, #00aaff, #00e3ae);
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
     }
 
-    p {
+    header .logout:hover {
+      opacity: 0.85;
+      transform: scale(1.03);
+    }
+
+    /* ===== Main Card ===== */
+    .container {
+      margin-top: 120px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 50px 60px;
+      text-align: center;
+      max-width: 650px;
+      width: 90%;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .success-icon {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(135deg, #00aaff, #00e3ae);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 25px;
+      color: #fff;
+      font-size: 40px;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(0, 227, 174, 0.4);
+      animation: pulse 1.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.95; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #111;
+      margin-bottom: 10px;
+    }
+
+    .tagline {
+      color: #666;
       font-size: 15px;
-      color: #444;
-      margin: 6px 0;
+      margin-bottom: 20px;
     }
 
+    .divider {
+      height: 1px;
+      background: #eee;
+      margin: 25px 0;
+    }
+
+    /* ===== User Details ===== */
+    .user-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      text-align: left;
+    }
+
+    .detail {
+      background: #f9fafc;
+      border-radius: 12px;
+      padding: 15px 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      transition: 0.3s;
+    }
+
+    .detail:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.07);
+    }
+
+    .detail span {
+      display: block;
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+
+    .detail strong {
+      color: #222;
+      font-size: 15px;
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: #999;
+    }
+
+    /* ===== Error ===== */
     .error {
       color: #dc2626;
       font-weight: 600;
     }
 
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
+    /* ===== Responsive ===== */
+    @media (max-width: 600px) {
+      .container {
+        padding: 40px 25px;
       }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      .user-details {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
-
 <body>
-  <div class="card" id="content">
-    <h2>Processing Login...</h2>
+  <div class="bg-animation"></div>
+
+  <header>
+    <div class="logo">GridLock Client Portal</div>
+    <button class="logout" onclick="window.location.href='/'">Logout</button>
+  </header>
+
+  <div class="container" id="content">
+    <h2>Verifying your session...</h2>
   </div>
 
   <script>
-    // Getting Params
     const params = new URLSearchParams(window.location.search);
-
-    // Extracting Token from the User
     const token = params.get("token");
-
-    // Decoded Token
-    const decoded_token = JSON.parse(atob(token))
-    // Extracting Username, User ID and Session ID
-    const username = decoded_token['user']['username']
-    const user_id = decoded_token['user']['user_id']
-    const session_id = decoded_token['user']['session_id']
-
     const content = document.getElementById("content");
-
-
-    // Get Cookie
-    function setCookie(name, value, days) {
-      const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
-      document.cookie = `${name}=${JSON.stringify(value)}; expires=${expires}; path=/`;
-    }
-
-    // Set Cookie
-    function getCookie(name) {
-      const cookies = document.cookie.split("; ");
-      for (let cookie of cookies) {
-        const [key, value] = cookie.split("=");
-        if (key === name) return decodeURIComponent(value);
-      }
-      return null;
-    }
-
-    if (decoded_token) {
-      value = {
-        "username": username,
-        "user_id": user_id,
-        "session_id": session_id
-      }
-      setCookie('session', value, 3);
-    }
-    
-    cookie_data = JSON.parse(getCookie('session'));
 
     if (token) {
       try {
         const user = JSON.parse(atob(token));
+        const time = new Date().toLocaleString();
+
         content.innerHTML = `
-          <h1>Welcome, ${user['user']['username']} 🎉</h1>
-          <p>User ID: ${user['user']['user_id']}</p>
-          <p>Session ID: ${user['user']['session_id']}</p>
-          <p>Authentication successful via <strong>GridAuth ✅</strong></p>
+          <div class="success-icon">✔</div>
+          <h1>Welcome, ${user.username} 👋</h1>
+          <p class="tagline">You’re securely authenticated with <strong>GridLock</strong>.</p>
+
+          <div class="divider"></div>
+
+          <div class="user-details">
+            <div class="detail">
+              <span>Email</span>
+              <strong>${user.email}</strong>
+            </div>
+            <div class="detail">
+              <span>Login Time</span>
+              <strong>${time}</strong>
+            </div>
+            <div class="detail">
+              <span>Auth Provider</span>
+              <strong>GridLock</strong>
+            </div>
+            <div class="detail">
+              <span>Session Status</span>
+              <strong>Active ✅</strong>
+            </div>
+          </div>
+
+          <footer>Secured by GridLock · © 2025</footer>
         `;
       } catch (err) {
         content.innerHTML = `
           <h1 class="error">Invalid Token ❌</h1>
-          <p>Please try signing in again.</p>
+          <p>Authentication failed. Please sign in again.</p>
         `;
       }
     } else {
@@ -138,9 +260,6 @@
         <p>Authentication failed. Please sign in again.</p>
       `;
     }
-
-
   </script>
 </body>
-
 </html>
